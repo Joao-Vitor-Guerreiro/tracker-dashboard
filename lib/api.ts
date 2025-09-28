@@ -1,6 +1,6 @@
 import type { Client, Sale, Checkout } from "@/types"
 
-const BASE_URL = "https://host.pauloenterprise.com.br"
+const BASE_URL = "https://tracker-tracker-api.fbkpeh.easypanel.host/"
 
 interface PaginationParams {
   page?: number
