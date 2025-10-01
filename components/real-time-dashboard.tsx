@@ -82,6 +82,12 @@ export default function RealTimeDashboard() {
   const totalFilteredApprovedSales = filteredSales.filter((sale) => sale.approved)
   const totalFilteredRevenue = totalFilteredApprovedSales.reduce((sum, sale) => sum + sale.amount, 0)
 
+  // Daily conversion: % of paid orders out of generated orders for today
+  const todaySales = useMemo(() => filterSalesByDate(visibleSales, "today" as any), [visibleSales])
+  const todayGeneratedCount = todaySales.length
+  const todayPaidCount = todaySales.filter((sale) => sale.approved).length
+  const dailyConversionPct = todayGeneratedCount > 0 ? (todayPaidCount / todayGeneratedCount) * 100 : 0
+
   const isLoading = salesData.isLoading || clientsData.isLoading
   const isLoadingMore = salesData.isLoadingMore || clientsData.isLoadingMore
   const isComplete = salesData.isComplete && clientsData.isComplete
@@ -107,6 +113,9 @@ export default function RealTimeDashboard() {
             myTotalSales={myTotalSales}
             myAvgTicket={myAvgTicket}
             totalFilteredRevenue={totalFilteredRevenue}
+            dailyConversionPct={dailyConversionPct}
+            dailyPaidCount={todayPaidCount}
+            dailyTotalCount={todayGeneratedCount}
             dateFilter={dateFilter}
             recentlyUpdated={recentlyUpdatedMetrics}
             isUpdating={isLoadingMore}
@@ -148,7 +157,7 @@ export default function RealTimeDashboard() {
               .reverse()
               .map((update, index) => (
                 <div
-                  key={`${update.type}-${update.batchIndex}-${update.timestamp.getTime()}`}
+                  key={`${update.type}-${update.batchIndex}-${update.timestamp.getTime()}-${index}`}
                   className={`flex items-center justify-between text-xs p-2 rounded ${
                     index === 0
                       ? "bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700"

@@ -1,13 +1,16 @@
 "use client"
 
 import { formatCurrency } from "@/lib/utils"
-import { DollarSign, Package, TrendingUp, Globe } from "lucide-react"
+import { DollarSign, Package, TrendingUp, Globe, Percent } from "lucide-react"
 
 interface RealTimeMetricsProps {
   myTotalRevenue: number
   myTotalSales: number
   myAvgTicket: number
   totalFilteredRevenue: number
+  dailyConversionPct: number
+  dailyPaidCount: number
+  dailyTotalCount: number
   dateFilter: string
   recentlyUpdated: Set<string>
   isUpdating: boolean
@@ -18,6 +21,9 @@ export default function RealTimeMetrics({
   myTotalSales,
   myAvgTicket,
   totalFilteredRevenue,
+  dailyConversionPct,
+  dailyPaidCount,
+  dailyTotalCount,
   dateFilter,
   recentlyUpdated,
   isUpdating,
@@ -95,6 +101,15 @@ export default function RealTimeMetrics({
         color="bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400"
         metricKey="avgTicket"
         subtitle="Baseado em vendas aprovadas"
+      />
+
+      <MetricCard
+        icon={Percent}
+        title="Conversão Diária"
+        value={`${dailyConversionPct.toFixed(1)}%`}
+        color="bg-teal-100 dark:bg-teal-900/30 text-teal-600 dark:text-teal-400"
+        metricKey="dailyConversion"
+        subtitle={`${dailyPaidCount}/${dailyTotalCount} pagos/gerados (Hoje)`}
       />
 
       <MetricCard
